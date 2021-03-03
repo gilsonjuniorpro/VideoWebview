@@ -60,8 +60,8 @@
 
                 //show(img)
 
-                var btn = document.getElementsByTagName("IMG")[0];
-                //var btn = document.createElement("IMG");
+                //var btn = document.getElementsByTagName("IMG")[0];
+                var btn = document.createElement("IMG");
                 //btn.createAttribute("data-uuid");
                 //btn.setAttribute("data-uuid", token);
                 //btn.innerHTML = "CLICK ME";
@@ -86,9 +86,19 @@
 
                 btn.src = url;
 
-                document.getElementsById("image").remove();
-                document.body.appendChild(btn);
+                var el = document.getElementById('image');
+                el.remove();
 
+                var attrs = btn.attributes;
+                var output = "";
+                for(var i = attrs.length - 1; i >= 0; i--) {
+                    output += attrs[i].name + " -> " + attrs[i].value + "\n";
+                }
+
+                document.getElementById("message").innerHTML = output;
+
+                document.getElementsByTagName("IMG")[0] = btn;
+                document.body.appendChild(btn);
             }
 
             function show(img){
