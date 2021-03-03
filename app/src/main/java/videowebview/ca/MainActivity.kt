@@ -4,13 +4,13 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.webkit.*
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.startActivity
 import videowebview.ca.databinding.ActivityMainBinding
-
 
 class MainActivity : AppCompatActivity() {
     lateinit var it: Intent
@@ -38,7 +38,21 @@ class MainActivity : AppCompatActivity() {
 
         binding.webview.loadUrl("file:///android_asset/index.html")
 
-        binding.webview.webChromeClient = WebChromeClient()
+        binding.webview.webChromeClient = object : WebChromeClient() {
+            override fun onJsAlert(view: WebView, url: String, message: String, result: JsResult): Boolean {
+                Log.d("TAG", "onJsAlert url: $url; message: $message")
+                val builder = AlertDialog.Builder(
+                        applicationContext)
+                builder.setMessage(message).setNeutralButton("OK") { dialog, arg1 ->
+                    dialog.dismiss()
+                }.show()
+                result.cancel()
+                return true
+            }
+        }
+
+
+
 
         val webSettings = binding.webview.settings
         webSettings.javaScriptEnabled = true

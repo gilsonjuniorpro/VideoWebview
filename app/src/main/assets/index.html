@@ -28,6 +28,7 @@
 
     <!-- First script will receive a chapter (video) number from the HTML 'onclick' and play from the beginning of that specific video. '0' is the first video in the playlist, '1' is the second etc-->
     <script type="text/javascript">
+            alert("test");
          function playChapter(chapter) {
              var video = VidyardV4.players[0];
              video.playChapter(chapter);
@@ -121,6 +122,20 @@
                  _.style.position='absolute';
                  _.getContext('2d').drawImage(img,0,0);
             }
+
+                // callback for a single player
+// Add the UUID of the player you're trying to reference where indicated
+window.onVidyardAPI = (vidyardEmbed) => {
+ vidyardEmbed.api.addReadyListener((_, player) => {
+ // put your code here
+ var players = VidyardV4.api.getPlayersByUUID("SrQzkLcJqjr1efvssLM9Rr");
+                players[0].play();
+
+
+
+
+}, "SrQzkLcJqjr1efvssLM9Rr")
+ }
     </script>
 
 
