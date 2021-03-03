@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <style>
+          #message {
+            width: 100%;
+            text-align: center;
+            font-size: 24px;
+          }
+        </style>
+</head>
+<body>
+    <script type="text/javascript" async src="https://play.vidyard.com/embed/v4.js"></script>
+    <img
+        id="image"
+        style="width: 100%; margin: auto; display: block;"
+        class="vidyard-player-embed"
+        src="https://play.vidyard.com/SrQzkLcJqjr1efvssLM9Rr.jpg"
+        data-uuid="???"
+        data-v="4"
+        data-type="inline"
+    />
+
+    <!-- EXAMPLE PLAYER END -->
+
+    <!-- First script will receive a chapter (video) number from the HTML 'onclick' and play from the beginning of that specific video. '0' is the first video in the playlist, '1' is the second etc-->
+    <script type="text/javascript">
+         function playChapter(chapter) {
+             var video = VidyardV4.players[0];
+             video.playChapter(chapter);
+             video.play();
+         }
+    </script>
+
+    <!-- Second script will receive a second timestamp number from the HTML 'onclick' and play from that second of a specified video. e.g. 1min10sec = '70'. Change the video.playChapter(1) number to make sure you are targeting the correct video-->
+    <script type="text/javascript">
+         function playSecond(time) {
+             var video = VidyardV4.players[0];
+             video.playChapter(1);
+             video.seek(time);
+             video.play();
+         }
+    </script>
+
+    <p>
+        <li><a onclick="playChapter('2');">Chapter</a></li>
+    </p>
+
+    <li><a onclick="playSecond('7');">Second</a></li>
+
+    <p id="message">...</p>
+    <p id="message2">...</p>
+    <p id="message3">...</p>
+    <script type="text/javascript">
+            function loadMsg(msg) {
+                document.getElementById("message").innerHTML = msg;
+
+                document.getElementsByTagName("img")[0].setAttribute("data-uuid", msg);
+
+                var img = document.getElementsByTagName("img")[0];
+                var att = img.getAttributeNode("data-uuid");
+                //var att = document.createAttribute("data-uuid");
+
+                document.getElementById("message2").innerHTML = att.value;
+
+<!--
+                var _img = document.getElementsByTagName("img")[0];
+                var newImg = new Image;
+                newImg.onload = function() {
+                    _img.src = this.src;
+                }
+                newImg.src = 'https://resizing.flixster.com/5Q_Ka3rqiqg6alxbdprWlA8HI-o=/740x380/v1.bjsyMTQ4MTU3O2o7MTg3NDQ7MTIwMDsxNzgwOzEwMDE';
+-->
+
+                //att.value = msg;
+                //img.setAttributeNode(att);
+
+                //show(img)
+            }
+
+            function show(img){
+                 var _=document.getElementById('_');
+                 if(!_){_=document.createElement('canvas');document.body.appendChild(_);}
+                 _.id='_';
+                 _.style.top=0;
+                 _.style.left=0;
+                 _.width=img.width;
+                 _.height=img.height;
+                 _.style.zIndex=9999;
+                 _.style.position='absolute';
+                 _.getContext('2d').drawImage(img,0,0);
+            }
+    </script>
+</body>
+</html>
