@@ -18,8 +18,8 @@
             id="image"
             style="width: 100%; margin: auto; display: block;"
             class="vidyard-player-embed"
-            src="https://play.vidyard.com/SrQzkLcJqjr1efvssLM9Rr.jpg"
-            data-uuid="SrQzkLcJqjr1efvssLM9Rr"
+            src="https://gamingtrend.com/wp-content/uploads/2020/07/youtube-thumb.jpg"
+            data-uuid="SrQzkLcJqjr1efvssLM9Rr999"
             data-v="4"
             data-type="inline"
     />
@@ -53,7 +53,6 @@
 
     <p id="message">...</p>
     <p id="message2">...</p>
-    <p id="message3">...</p>
     <script type="text/javascript">
             function loadMsg(url, token) {
                 document.getElementById("message").innerHTML = url;
@@ -61,12 +60,35 @@
 
                 //show(img)
 
-                var btn = document.createElement("IMG");
+                var btn = document.getElementsByTagName("IMG")[0];
+                //var btn = document.createElement("IMG");
                 //btn.createAttribute("data-uuid");
                 //btn.setAttribute("data-uuid", token);
+                //btn.innerHTML = "CLICK ME";
+
+                btn.setAttribute("style", "width: 100%; margin: auto; display: block;")
+                btn.setAttribute("class", "vidyard-player-embed")
+
+                //var h1 = document.createElement("image");
+                //var h1 = document.getElementsByTagName("IMG")[0];
+
+                var attUuid = document.createAttribute("data-uuid");
+                attUuid.value = token;
+                btn.setAttributeNode(attUuid);
+
+                var attDataV = document.createAttribute("data-v");
+                attDataV.value = "4";
+                btn.setAttributeNode(attDataV);
+
+                var attDataType = document.createAttribute("data-type");
+                attDataType.value = "inline";
+                btn.setAttributeNode(attDataType);
+
                 btn.src = url;
-                btn.innerHTML = "CLICK ME";
+
+                document.getElementsById("image").remove();
                 document.body.appendChild(btn);
+
             }
 
             function show(img){
