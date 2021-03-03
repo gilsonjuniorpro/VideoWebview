@@ -19,16 +19,13 @@ class MainActivity : AppCompatActivity() {
 
         binding.webview.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView, url: String) {
-                /*if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-                    view.evaluateJavascript("loadMsg('How are you today!')", null)
-                } else {
-                    view.loadUrl("javascript:loadMsg('How are you today!')")
-                }*/
+                val url = "https://play.vidyard.com/SrQzkLcJqjr1efvssLM9Rr.jpg"
+                val token = "SrQzkLcJqjr1efvssLM9Rr"
 
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-                    view.evaluateJavascript("loadMsg('SrQzkLcJqjr1efvssLM9Rr')", null)
+                    view.evaluateJavascript("loadMsg('$url', '$token')", null)
                 } else {
-                    view.loadUrl("javascript:loadMsg('SrQzkLcJqjr1efvssLM9Rr')")
+                    view.loadUrl("javascript:loadMsg('$url', '$token')")
                 }
             }
         }
@@ -40,34 +37,5 @@ class MainActivity : AppCompatActivity() {
         val webSettings = binding.webview.settings
         webSettings.javaScriptEnabled = true
         webSettings.pluginState = WebSettings.PluginState.ON
-
-
-        /*
-        //Java
-        webview.getSettings().setJavaScriptEnabled(true);
-        webview.loadUrl("<your html file>"); //not in scope of this gist
-        webview.setWebViewClient(new WebViewClient(){
-            public void onPageFinished(WebView view, String url){
-                //Here you want to use .loadUrl again
-                //on the webview object and pass in
-                //"javascript:<your javaScript function"
-                webview.loadUrl("javascript:myJavaScriptFunc('" + argumentPassingIn + "')"); //if passing in an object. Mapping may need to take place
-            }
-        });
-
-        //HTML
-        <!DOCTYPE html>
-        <html>
-        <head><title>Demo</title></head>
-        <body>
-          <h1>Body</h1>
-          <script>
-            myJavaScriptFunc(val){
-              //Do something with val
-            }
-          </script>
-        </body>
-        </html>
-        */
     }
 }

@@ -15,13 +15,13 @@
 <body>
     <script type="text/javascript" async src="https://play.vidyard.com/embed/v4.js"></script>
     <img
-        id="image"
-        style="width: 100%; margin: auto; display: block;"
-        class="vidyard-player-embed"
-        src="https://play.vidyard.com/SrQzkLcJqjr1efvssLM9Rr.jpg"
-        data-uuid="???"
-        data-v="4"
-        data-type="inline"
+            id="image"
+            style="width: 100%; margin: auto; display: block;"
+            class="vidyard-player-embed"
+            src="https://play.vidyard.com/SrQzkLcJqjr1efvssLM9Rr.jpg"
+            data-uuid="SrQzkLcJqjr1efvssLM9Rr"
+            data-v="4"
+            data-type="inline"
     />
 
     <!-- EXAMPLE PLAYER END -->
@@ -55,30 +55,18 @@
     <p id="message2">...</p>
     <p id="message3">...</p>
     <script type="text/javascript">
-            function loadMsg(msg) {
-                document.getElementById("message").innerHTML = msg;
-
-                document.getElementsByTagName("img")[0].setAttribute("data-uuid", msg);
-
-                var img = document.getElementsByTagName("img")[0];
-                var att = img.getAttributeNode("data-uuid");
-                //var att = document.createAttribute("data-uuid");
-
-                document.getElementById("message2").innerHTML = att.value;
-
-<!--
-                var _img = document.getElementsByTagName("img")[0];
-                var newImg = new Image;
-                newImg.onload = function() {
-                    _img.src = this.src;
-                }
-                newImg.src = 'https://resizing.flixster.com/5Q_Ka3rqiqg6alxbdprWlA8HI-o=/740x380/v1.bjsyMTQ4MTU3O2o7MTg3NDQ7MTIwMDsxNzgwOzEwMDE';
--->
-
-                //att.value = msg;
-                //img.setAttributeNode(att);
+            function loadMsg(url, token) {
+                document.getElementById("message").innerHTML = url;
+                document.getElementById("message2").innerHTML = token;
 
                 //show(img)
+
+                var btn = document.createElement("IMG");
+                //btn.createAttribute("data-uuid");
+                //btn.setAttribute("data-uuid", token);
+                btn.src = url;
+                btn.innerHTML = "CLICK ME";
+                document.body.appendChild(btn);
             }
 
             function show(img){
@@ -94,5 +82,7 @@
                  _.getContext('2d').drawImage(img,0,0);
             }
     </script>
+
+
 </body>
 </html>
