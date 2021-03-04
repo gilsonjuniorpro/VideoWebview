@@ -47,30 +47,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     class MyWebViewClient(private val context: Context) : WebViewClientCompat() {
-        private val assetLoader: WebViewAssetLoader = WebViewAssetLoader.Builder()
-                .setDomain("index.html")
-                .addPathHandler("/assets/", WebViewAssetLoader.AssetsPathHandler(context))
-                .addPathHandler("/public/", WebViewAssetLoader.InternalStoragePathHandler(
-                        context,
-                        File(context.filesDir, "public")
-                ))
-                .addPathHandler("/res/",WebViewAssetLoader.ResourcesPathHandler(context))
-                .build()
-
-        /*@Suppress("DEPRECATION")
-        override fun onPageFinished(view: WebView, url: String) {
-            super.onPageFinished(view, url)
-            val contentType = URLConnection.guessContentTypeFromName(url)
-            Toast.makeText(view.context,"url=$url\nscale=${view.scale}\nmimeType=$contentType",Toast.LENGTH_SHORT).show()
-        }*/
-
-        override fun shouldInterceptRequest(
-                view: WebView,
-                request: WebResourceRequest
-        ): WebResourceResponse? {
-            return assetLoader.shouldInterceptRequest(request.url)
-        }
-
         override fun onPageFinished(view: WebView, url: String) {
             val url = "https://play.vidyard.com/SrQzkLcJqjr1efvssLM9Rr.jpg"
             //val url = "https://gamingtrend.com/wp-content/uploads/2020/07/youtube-thumb.jpg"
