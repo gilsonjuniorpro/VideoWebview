@@ -1,18 +1,17 @@
 package videowebview.ca
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.webkit.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.startActivity
+import androidx.webkit.WebViewAssetLoader
+import androidx.webkit.WebViewClientCompat
 import videowebview.ca.databinding.ActivityMainBinding
-
+import java.io.File
+import java.net.URLConnection
 
 class MainActivity : AppCompatActivity() {
     lateinit var it: Intent
@@ -24,6 +23,16 @@ class MainActivity : AppCompatActivity() {
         it = Intent(this, MainActivity::class.java)
 
         binding.webview.webViewClient = MyWebViewClient(this)
+        binding.webview.settings.apply {
+            useWideViewPort = true
+            loadWithOverviewMode = true
+            javaScriptEnabled = true
+            allowFileAccessFromFileURLs = true
+            allowUniversalAccessFromFileURLs = true
+            allowFileAccess = true
+            allowContentAccess = true
+            WebSettings.PluginState.ON
+        }
 
         binding.webview.loadUrl("file:///android_asset/index.html")
 
@@ -34,18 +43,34 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        val webSettings = binding.webview.settings
-        webSettings.javaScriptEnabled = true
-        webSettings.pluginState = WebSettings.PluginState.ON
-
-        binding.button.setOnClickListener{
-            loadPage(it)
-        }
-
         binding.webview.addJavascriptInterface(WebAppInterface(this), "Android")
     }
 
-    class MyWebViewClient(private val context: Context) : WebViewClient() {
+    class MyWebViewClient(private val context: Context) : WebViewClientCompat() {
+        private val assetLoader: WebViewAssetLoader = WebViewAssetLoader.Builder()
+                .setDomain("index.html")
+                .addPathHandler("/assets/", WebViewAssetLoader.AssetsPathHandler(context))
+                .addPathHandler("/public/", WebViewAssetLoader.InternalStoragePathHandler(
+                        context,
+                        File(context.filesDir, "public")
+                ))
+                .addPathHandler("/res/",WebViewAssetLoader.ResourcesPathHandler(context))
+                .build()
+
+        /*@Suppress("DEPRECATION")
+        override fun onPageFinished(view: WebView, url: String) {
+            super.onPageFinished(view, url)
+            val contentType = URLConnection.guessContentTypeFromName(url)
+            Toast.makeText(view.context,"url=$url\nscale=${view.scale}\nmimeType=$contentType",Toast.LENGTH_SHORT).show()
+        }*/
+
+        override fun shouldInterceptRequest(
+                view: WebView,
+                request: WebResourceRequest
+        ): WebResourceResponse? {
+            return assetLoader.shouldInterceptRequest(request.url)
+        }
+
         override fun onPageFinished(view: WebView, url: String) {
             val url = "https://play.vidyard.com/SrQzkLcJqjr1efvssLM9Rr.jpg"
             //val url = "https://gamingtrend.com/wp-content/uploads/2020/07/youtube-thumb.jpg"
@@ -65,21 +90,19 @@ class MainActivity : AppCompatActivity() {
         fun showToast(toast: String) {
             Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show()
         }
-    }
 
-    @SuppressLint("JavascriptInterface")
-    fun loadPage(view: View) {
-        val browser = WebView(this)
-        browser.settings.javaScriptEnabled = true
-        browser.loadUrl("file:///android_asset/page.html")
-        setContentView(browser)
-        val ws = browser.settings
-        ws.javaScriptEnabled = true
-        browser.addJavascriptInterface(object : Any() {
-            @JavascriptInterface // For API 17+
-            fun performClick(string: String) {
-                Toast.makeText(this@MainActivity, string, Toast.LENGTH_SHORT).show()
+        @JavascriptInterface
+        fun isPlaying(isIt: Boolean) {
+            if(isIt) {
+                Toast.makeText(mContext, "The video is playing", Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(mContext, "The video is not playing", Toast.LENGTH_SHORT).show()
             }
-        }, "ok")
+        }
+
+        @JavascriptInterface
+        fun performClick(string: String) {
+            Toast.makeText(mContext, string, Toast.LENGTH_SHORT).show()
+        }
     }
 }

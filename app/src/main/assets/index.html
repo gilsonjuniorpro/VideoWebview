@@ -16,7 +16,7 @@
     <script type="text/javascript" async src="https://play.vidyard.com/embed/v4.js"></script>
     <img
             id="image"
-            style="width: 100%; margin: auto; display: block;"
+            style="width: 10%; margin: auto; display: block;"
             class="vidyard-player-embed"
             src="https://gamingtrend.com/wp-content/uploads/2020/07/youtube-thumb.jpg"
             data-uuid="SrQzkLcJqjr1efvssLM9Rr"
@@ -28,54 +28,102 @@
 
     <!-- First script will receive a chapter (video) number from the HTML 'onclick' and play from the beginning of that specific video. '0' is the first video in the playlist, '1' is the second etc-->
     <script type="text/javascript">
-         function playChapter(chapter) {
-             var video = VidyardV4.players[0];
-             video.playChapter(chapter);
-             video.play();
-         }
-    </script>
-
-    <!-- Second script will receive a second timestamp number from the HTML 'onclick' and play from that second of a specified video. e.g. 1min10sec = '70'. Change the video.playChapter(1) number to make sure you are targeting the correct video-->
-    <script type="text/javascript">
-         function playSecond(time) {
-             var video = VidyardV4.players[0];
-             video.playChapter(1);
-             video.seek(time);
-             video.play();
-         }
-    </script>
-
-    <input type="button" value="Click Here" onClick="showToast('dae mano')" />
-
-    <script type="text/javascript">
-        function showToast(msg) {
-            Android.showToast(msg);
+        function playChapter(chapter) {
+            var video = VidyardV4.players[0];
+            video.playChapter(chapter);
+            video.play();
         }
+
+        function playSecond(time) {
+            var video = VidyardV4.players[0];
+            video.playChapter(1);
+            video.seek(time);
+            video.play();
+        }
+
+        function showToast(msg) {
+            window.onVidyardAPI = (vidyardEmbed) => {
+                vidyardEmbed.api.addReadyListener((_, player) => {
+                    console.log('player ready:', player.ready());
+                    console.log(player.uuid);
+                    // put your code here
+                }, "UUID")
+            }
+
+            //Android.showToast(msg);
+
+            var video = VidyardV4.players[0];
+            video.play();
+        }
+
+        function isPlaying() {
+            //Android.isPlaying(true);
+
+            var video = VidyardV4.players[0];
+            video.pause();
+        }
+
+        function performClick(msg) {
+            window.onVidyardAPI = (vidyardEmbed) => {
+                vidyardEmbed.api.addReadyListener((_, player) => {
+                    console.log('player ready:', player.ready());
+                    console.log(player.uuid);
+                    // put your code here
+                }, "UUID")
+            }
+
+            //Android.performClick(msg);
+
+            var video = VidyardV4.players[0];
+            video.stop();
+        }
+
+
     </script>
+
+    <p><input type="button" value="play" onClick="showToast('test button click')" /></p>
+
+    <p><input type="button" value="pause" onClick="isPlaying()" /></p>
+
+    <p><input type="button" value="stop" onClick="performClick('test button performClick')" /></p>
+
 
     <p id="message">...</p>
     <p id="message2">...</p>
     <script type="text/javascript">
             function loadMsg(url, token) {
                 var img = document.createElement('img');
+
+                img.setAttribute("style", "width: 100%; margin: auto; display: block;")
+                img.setAttribute("class", "vidyard-player-embed")
+
+                var attUuid = document.createAttribute("data-uuid");
+                attUuid.value = token;
+                img.setAttributeNode(attUuid);
+
+                var attDataV = document.createAttribute("data-v");
+                attDataV.value = "4";
+                img.setAttributeNode(attDataV);
+
+                var attDataType = document.createAttribute("data-type");
+                attDataType.value = "inline";
+                img.setAttributeNode(attDataType);
+
+                var attrs = img.attributes;
+                var output = "";
+                for(var i = attrs.length - 1; i >= 0; i--) {
+                    output += attrs[i].name + " -> " + attrs[i].value + "<br/>";
+                }
+
                 img.src = url;
+                document.getElementById("message").innerHTML = output;
                 document.body.appendChild(img);
+
+                var players = VidyardV4.api.getPlayersByUUID(token);
+                players[0].play();
             }
 
-            function show(img){
-                 var _=document.getElementById('_');
-                 if(!_){_=document.createElement('canvas');document.body.appendChild(_);}
-                 _.id='_';
-                 _.style.top=0;
-                 _.style.left=0;
-                 _.width=img.width;
-                 _.height=img.height;
-                 _.style.zIndex=9999;
-                 _.style.position='absolute';
-                 _.getContext('2d').drawImage(img,0,0);
-            }
     </script>
-
 
 </body>
 </html>
