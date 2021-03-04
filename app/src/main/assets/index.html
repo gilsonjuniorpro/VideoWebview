@@ -1,129 +1,90 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <style>
-          #message {
-            width: 100%;
-            text-align: center;
-            font-size: 24px;
-          }
-        </style>
-</head>
+
+<html>
+<style>
+    body {
+        background-color: #FF0000;
+        width: 100%;
+        text-align: center;
+        font-size: 96px;
+    }
+    </style>
 <body>
-    <script type="text/javascript" async src="https://play.vidyard.com/embed/v4.js"></script>
-    <img
-            id="image"
-            style="width: 10%; margin: auto; display: block;"
-            class="vidyard-player-embed"
-            src="https://gamingtrend.com/wp-content/uploads/2020/07/youtube-thumb.jpg"
-            data-uuid="SrQzkLcJqjr1efvssLM9Rr"
-            data-v="4"
-            data-type="inline"
-    />
 
-    <!-- EXAMPLE PLAYER END -->
+<!-- The script tag should live in the head of your page if at all possible -->
+<script type="text/javascript" src="https://play.vidyard.com/embed/v4.js"></script>
 
-    <!-- First script will receive a chapter (video) number from the HTML 'onclick' and play from the beginning of that specific video. '0' is the first video in the playlist, '1' is the second etc-->
-    <script type="text/javascript">
-        function playChapter(chapter) {
-            var video = VidyardV4.players[0];
-            video.playChapter(chapter);
-            video.play();
-        }
+<script>
+    window.onVidyardAPI = (vidyardEmbed) => {
+        vidyardEmbed.api.addReadyListener((_, player) => {
+            console.log('player ready:', player.ready());
+            console.log(player.uuid);
 
-        function playSecond(time) {
-            var video = VidyardV4.players[0];
-            video.playChapter(1);
-            video.seek(time);
-            video.play();
-        }
+            var data = {
+                "event": "ready",
+            };
 
-        function showToast(msg) {
-            window.onVidyardAPI = (vidyardEmbed) => {
-                vidyardEmbed.api.addReadyListener((_, player) => {
-                    console.log('player ready:', player.ready());
-                    console.log(player.uuid);
-                    // put your code here
-                }, "UUID")
-            }
+            window.webkit.messageHandlers.eventHandler.postMessage(data)
 
-            //Android.showToast(msg);
+            player.on('playerComplete', function () {
+                window.webkit.messageHandlers.eventHandler.postMessage()
+            });
 
-            var video = VidyardV4.players[0];
-            video.play();
-        }
+            player.on('play', function (eventTime) {
+                console.log('play');
+                var data = {
+                    "event": "play",
+                    "playbackTime": eventTime,
+                };
 
-        function isPlaying() {
-            //Android.isPlaying(true);
-
-            var video = VidyardV4.players[0];
-            video.pause();
-        }
-
-        function performClick(msg) {
-            window.onVidyardAPI = (vidyardEmbed) => {
-                vidyardEmbed.api.addReadyListener((_, player) => {
-                    console.log('player ready:', player.ready());
-                    console.log(player.uuid);
-                    // put your code here
-                }, "UUID")
-            }
-
-            //Android.performClick(msg);
-
-            var video = VidyardV4.players[0];
-            video.stop();
-        }
+                window.webkit.messageHandlers.eventHandler.postMessage(data)
+            });
 
 
-    </script>
+            player.on('pause', function () {
+                console.log('pause');
+                var data = {
+                    "event": "pause",
+                    "playbackTime": VidyardV4.api.getPlayersByUUID("<uuid>")[0].currentTime()
+                };
 
-    <p><input type="button" value="play" onClick="showToast('test button click')" /></p>
-
-    <p><input type="button" value="pause" onClick="isPlaying()" /></p>
-
-    <p><input type="button" value="stop" onClick="performClick('test button performClick')" /></p>
+                window.webkit.messageHandlers.eventHandler.postMessage(data)
+            });
 
 
-    <p id="message">...</p>
-    <p id="message2">...</p>
-    <script type="text/javascript">
-            function loadMsg(url, token) {
-                var img = document.createElement('img');
+        },)
+    }
 
-                img.setAttribute("style", "width: 100%; margin: auto; display: block;")
-                img.setAttribute("class", "vidyard-player-embed")
+    function playVideo() {
+        Android.playVideo();
 
-                var attUuid = document.createAttribute("data-uuid");
-                attUuid.value = token;
-                img.setAttributeNode(attUuid);
+        var video = VidyardV4.players[0];
+        video.play();
+    }
 
-                var attDataV = document.createAttribute("data-v");
-                attDataV.value = "4";
-                img.setAttributeNode(attDataV);
+    function pauseVideo() {
+        Android.pauseVideo();
 
-                var attDataType = document.createAttribute("data-type");
-                attDataType.value = "inline";
-                img.setAttributeNode(attDataType);
+        var video = VidyardV4.players[0];
+        video.pause();
+    }
 
-                var attrs = img.attributes;
-                var output = "";
-                for(var i = attrs.length - 1; i >= 0; i--) {
-                    output += attrs[i].name + " -> " + attrs[i].value + "<br/>";
-                }
+</script>
 
-                img.src = url;
-                document.getElementById("message").innerHTML = output;
-                document.body.appendChild(img);
+<img
+        style="width: 100%; margin: auto; display: block;"
+        class="vidyard-player-embed"
+        src="https://play.vidyard.com/<uuid>.jpg"
+        data-uuid="<uuid>"
+        data-v="4"
+        data-type="inline"
+/>
 
-                var players = VidyardV4.api.getPlayersByUUID(token);
-                players[0].play();
-            }
+<p>
+    <input type="button" value="play" onClick="playVideo()" />
+    <input type="button" value="pause" onClick="pauseVideo()" />
+</p>
 
-    </script>
 
 </body>
 </html>
