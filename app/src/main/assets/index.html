@@ -1,127 +1,89 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <style>
-          #message {
-            width: 100%;
-            text-align: center;
-            font-size: 24px;
-          }
-        </style>
-</head>
+
+<html>
+<style>
+    body {
+        background-color: #FF0000;
+        width: 100%;
+        text-align: center;
+        font-size: 96px;
+    }
+    </style>
 <body>
-    <script type="text/javascript" async src="https://play.vidyard.com/embed/v4.js"></script>
-    <img
-            id="image"
-            style="width: 100%; margin: auto; display: block;"
-            class="vidyard-player-embed"
-            src="https://gamingtrend.com/wp-content/uploads/2020/07/youtube-thumb.jpg"
-            data-uuid="SrQzkLcJqjr1efvssLM9Rr"
-            data-v="4"
-            data-type="inline"
-    />
 
-    <!-- EXAMPLE PLAYER END -->
+<!-- The script tag should live in the head of your page if at all possible -->
+<script type="text/javascript" src="https://play.vidyard.com/embed/v4.js"></script>
 
-    <!-- First script will receive a chapter (video) number from the HTML 'onclick' and play from the beginning of that specific video. '0' is the first video in the playlist, '1' is the second etc-->
-    <script type="text/javascript">
-         function playChapter(chapter) {
-             var video = VidyardV4.players[0];
-             video.playChapter(chapter);
-             video.play();
-         }
-    </script>
+<script>
+    window.onVidyardAPI = (vidyardEmbed) => {
+        vidyardEmbed.api.addReadyListener((_, player) => {
+            console.log('player ready:', player.ready());
+            console.log(player.uuid);
 
-    <!-- Second script will receive a second timestamp number from the HTML 'onclick' and play from that second of a specified video. e.g. 1min10sec = '70'. Change the video.playChapter(1) number to make sure you are targeting the correct video-->
-    <script type="text/javascript">
-         function playSecond(time) {
-             var video = VidyardV4.players[0];
-             video.playChapter(1);
-             video.seek(time);
-             video.play();
-         }
-    </script>
+            var data = {
+                "event": "ready",
+            };
 
-    <p>
-        <li><a onclick="playChapter('2');">Chapter</a></li>
-    </p>
+            window.webkit.messageHandlers.eventHandler.postMessage(data)
 
-    <li><a onclick="playSecond('7');">Second</a></li>
+            player.on('playerComplete', function () {
+                window.webkit.messageHandlers.eventHandler.postMessage()
+            });
 
-    <input type="button" value="Click Here" onClick="showActivity()" />
+            player.on('play', function (eventTime) {
+                console.log('play');
+                var data = {
+                    "event": "play",
+                    "playbackTime": eventTime,
+                };
 
-    <script type="text/javascript">
-        function showActivity() {
-            Android.startNewActivity();
-        }
-    </script>
+                window.webkit.messageHandlers.eventHandler.postMessage(data)
+            });
 
-    <p id="message">...</p>
-    <p id="message2">...</p>
-    <script type="text/javascript">
-            function loadMsg(url, token) {
-                document.getElementById("message").innerHTML = url;
-                document.getElementById("message2").innerHTML = token;
 
-                //show(img)
+            player.on('pause', function () {
+                console.log('pause');
+                var data = {
+                    "event": "pause",
+                    "playbackTime": VidyardV4.api.getPlayersByUUID("<uuid>")[0].currentTime()
+                };
 
-                //var btn = document.getElementsByTagName("IMG")[0];
-                var btn = document.createElement("IMG");
-                //btn.createAttribute("data-uuid");
-                //btn.setAttribute("data-uuid", token);
-                //btn.innerHTML = "CLICK ME";
+                window.webkit.messageHandlers.eventHandler.postMessage(data)
+            });
 
-                btn.setAttribute("style", "width: 100%; margin: auto; display: block;")
-                btn.setAttribute("class", "vidyard-player-embed")
 
-                //var h1 = document.createElement("image");
-                //var h1 = document.getElementsByTagName("IMG")[0];
+        },)
+    }
 
-                var attUuid = document.createAttribute("data-uuid");
-                attUuid.value = token;
-                btn.setAttributeNode(attUuid);
+    function playVideo() {
+        Android.playVideo();
 
-                var attDataV = document.createAttribute("data-v");
-                attDataV.value = "4";
-                btn.setAttributeNode(attDataV);
+        var video = VidyardV4.players[0];
+        video.play();
+    }
 
-                var attDataType = document.createAttribute("data-type");
-                attDataType.value = "inline";
-                btn.setAttributeNode(attDataType);
+    function pauseVideo() {
+        Android.pauseVideo();
 
-                btn.src = url;
+        var video = VidyardV4.players[0];
+        video.pause();
+    }
 
-                var el = document.getElementById('image');
-                el.remove();
+</script>
 
-                var attrs = btn.attributes;
-                var output = "";
-                for(var i = attrs.length - 1; i >= 0; i--) {
-                    output += attrs[i].name + " -> " + attrs[i].value + "\n";
-                }
+<img
+        style="width: 100%; margin: auto; display: block;"
+        class="vidyard-player-embed"
+        src="https://play.vidyard.com/<uuid>.jpg"
+        data-uuid="<uuid>"
+        data-v="4"
+        data-type="inline"
+/>
 
-                document.getElementById("message").innerHTML = output;
-
-                document.getElementsByTagName("IMG")[0] = btn;
-                document.body.appendChild(btn);
-            }
-
-            function show(img){
-                 var _=document.getElementById('_');
-                 if(!_){_=document.createElement('canvas');document.body.appendChild(_);}
-                 _.id='_';
-                 _.style.top=0;
-                 _.style.left=0;
-                 _.width=img.width;
-                 _.height=img.height;
-                 _.style.zIndex=9999;
-                 _.style.position='absolute';
-                 _.getContext('2d').drawImage(img,0,0);
-            }
-    </script>
+<p>
+    <input type="button" value="play" onClick="playVideo()" />
+    <input type="button" value="pause" onClick="pauseVideo()" />
+</p>
 
 
 </body>
