@@ -45,17 +45,11 @@
          }
     </script>
 
-    <p>
-        <li><a onclick="playChapter('2');">Chapter</a></li>
-    </p>
-
-    <li><a onclick="playSecond('7');">Second</a></li>
-
-    <input type="button" value="Click Here" onClick="showActivity()" />
+    <input type="button" value="Click Here" onClick="showToast('dae mano')" />
 
     <script type="text/javascript">
-        function showActivity() {
-            Android.startNewActivity();
+        function showToast(msg) {
+            Android.showToast(msg);
         }
     </script>
 
@@ -63,50 +57,9 @@
     <p id="message2">...</p>
     <script type="text/javascript">
             function loadMsg(url, token) {
-                document.getElementById("message").innerHTML = url;
-                document.getElementById("message2").innerHTML = token;
-
-                //show(img)
-
-                //var btn = document.getElementsByTagName("IMG")[0];
-                var btn = document.createElement("IMG");
-                //btn.createAttribute("data-uuid");
-                //btn.setAttribute("data-uuid", token);
-                //btn.innerHTML = "CLICK ME";
-
-                btn.setAttribute("style", "width: 100%; margin: auto; display: block;")
-                btn.setAttribute("class", "vidyard-player-embed")
-
-                //var h1 = document.createElement("image");
-                //var h1 = document.getElementsByTagName("IMG")[0];
-
-                var attUuid = document.createAttribute("data-uuid");
-                attUuid.value = token;
-                btn.setAttributeNode(attUuid);
-
-                var attDataV = document.createAttribute("data-v");
-                attDataV.value = "4";
-                btn.setAttributeNode(attDataV);
-
-                var attDataType = document.createAttribute("data-type");
-                attDataType.value = "inline";
-                btn.setAttributeNode(attDataType);
-
-                btn.src = url;
-
-                var el = document.getElementById('image');
-                el.remove();
-
-                var attrs = btn.attributes;
-                var output = "";
-                for(var i = attrs.length - 1; i >= 0; i--) {
-                    output += attrs[i].name + " -> " + attrs[i].value + "\n";
-                }
-
-                document.getElementById("message").innerHTML = output;
-
-                document.getElementsByTagName("IMG")[0] = btn;
-                document.body.appendChild(btn);
+                var img = document.createElement('img');
+                img.src = url;
+                document.body.appendChild(img);
             }
 
             function show(img){

@@ -3,7 +3,9 @@ package videowebview.ca
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.webkit.*
 import android.widget.Toast
@@ -21,24 +23,16 @@ class MainActivity : AppCompatActivity() {
 
         it = Intent(this, MainActivity::class.java)
 
-        binding.webview.webViewClient = WebViewClient()
-
-        binding.webview.webViewClient = object : WebViewClient() {
-            override fun onPageFinished(view: WebView, url: String) {
-                val url = "https://play.vidyard.com/SrQzkLcJqjr1efvssLM9Rr.jpg"
-                val token = "SrQzkLcJqjr1efvssLM9Rr"
-
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-                    view.evaluateJavascript("loadMsg('$url', '$token')", null)
-                } else {
-                    view.loadUrl("javascript:loadMsg('$url', '$token')")
-                }
-            }
-        }
+        binding.webview.webViewClient = MyWebViewClient(this)
 
         binding.webview.loadUrl("file:///android_asset/index.html")
 
-        binding.webview.webChromeClient = WebChromeClient()
+        binding.webview.webChromeClient = object : WebChromeClient() {
+            override fun onConsoleMessage(message: ConsoleMessage): Boolean {
+                Log.d("MyApplication", "${message.message()} -- From line ${message.lineNumber()} of ${message.sourceId()}")
+                return true
+            }
+        }
 
         val webSettings = binding.webview.settings
         webSettings.javaScriptEnabled = true
@@ -51,18 +45,25 @@ class MainActivity : AppCompatActivity() {
         binding.webview.addJavascriptInterface(WebAppInterface(this), "Android")
     }
 
-    class WebAppInterface internal constructor(c: Context) {
-        var mContext: Context
+    class MyWebViewClient(private val context: Context) : WebViewClient() {
+        override fun onPageFinished(view: WebView, url: String) {
+            val url = "https://play.vidyard.com/SrQzkLcJqjr1efvssLM9Rr.jpg"
+            //val url = "https://gamingtrend.com/wp-content/uploads/2020/07/youtube-thumb.jpg"
+            val token = "SrQzkLcJqjr1efvssLM9Rr"
 
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                view.evaluateJavascript("loadMsg('$url', '$token')", null)
+            } else {
+                view.loadUrl("javascript:loadMsg('$url', '$token')")
+            }
+        }
+    }
+
+    class WebAppInterface(private val mContext: Context) {
         /** Show a toast from the web page  */
         @JavascriptInterface
-        fun startNewActivity() {
-            println("test")
-        }
-
-        /** Instantiate the interface and set the context  */
-        init {
-            mContext = c
+        fun showToast(toast: String) {
+            Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show()
         }
     }
 
