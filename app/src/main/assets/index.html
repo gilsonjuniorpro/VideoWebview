@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 
-<html>
 <style>
     body {
         background-color: #000000;
@@ -9,12 +8,12 @@
     }
 
     .button {
-        font-size: 24px;
-        padding: 10px;
-        border-radius: 10px;
-        -moz-border-radius: 10px;
-        -webkit-border-radius: 10px;
-        margin:10px
+        font-size: 18px;
+        padding: 5px;
+        border-radius: 5px;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        margin:5px
     }
 
     .small-btn {
@@ -28,8 +27,8 @@
     }
 
     .big-btn {
-        width: 100px;
-        height: 50px;
+        width: 90px;
+        height: 40px;
     }
     </style>
 <body>
@@ -50,6 +49,7 @@
             window.webkit.messageHandlers.eventHandler.postMessage(data)
 
             player.on('playerComplete', function () {
+                console.log('playerComplete');
                 window.webkit.messageHandlers.eventHandler.postMessage()
             });
 
@@ -62,7 +62,6 @@
 
                 window.webkit.messageHandlers.eventHandler.postMessage(data)
             });
-
 
             player.on('pause', function () {
                 console.log('pause');
@@ -78,18 +77,20 @@
         },)
     }
 
-    function playVideo() {
-        Android.playVideo();
+    function getGreetings() {
+        return 1;
+    }
 
+    function playVideo() {
         var video = VidyardV4.players[0];
         video.play();
+        Android.pauseVideo(video.uuid, video.currentTime());
     }
 
     function pauseVideo() {
-        Android.pauseVideo();
-
         var video = VidyardV4.players[0];
         video.pause();
+        Android.playVideo(video.uuid, video.currentTime());
     }
 
     function setFullscreen() {
