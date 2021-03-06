@@ -92,6 +92,13 @@
         video.pause();
     }
 
+    function setFullscreen() {
+        Android.setFullscreen();
+
+        var video = VidyardV4.players[0];
+        video.toggleFullscreen();
+    }
+
 </script>
 
 <img
@@ -106,6 +113,7 @@
 <p>
     <input type="button" class="button big-btn" value="play" onClick="playVideo()" />
     <input type="button" class="button big-btn" value="pause" onClick="pauseVideo()" />
+    <input type="button" class="button big-btn" value="fullscreen" onClick="setFullscreen()" />
 </p>
 
 
