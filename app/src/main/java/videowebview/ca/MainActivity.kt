@@ -1,10 +1,11 @@
 package videowebview.ca
 
 import android.os.Bundle
-import android.webkit.WebSettings
-import android.webkit.WebViewClient
+import android.webkit.*
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import videowebview.ca.databinding.ActivityMainBinding
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -13,7 +14,14 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.webview.webViewClient = WebViewClient()
+        binding.webview.webViewClient = object : WebViewClient(){
+            override fun shouldOverrideUrlLoading(
+                view: WebView?,
+                request: WebResourceRequest?
+            ): Boolean {
+                return super.shouldOverrideUrlLoading(view, request)
+            }
+        }
 
         binding.webview.settings.apply {
             domStorageEnabled = true
