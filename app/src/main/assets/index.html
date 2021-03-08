@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
 <style>
     body {
         background-color: #000000;
@@ -31,7 +34,7 @@
         height: 40px;
     }
     </style>
-<body>
+
 
 <!-- The script tag should live in the head of your page if at all possible -->
 <script type="text/javascript" src="https://play.vidyard.com/embed/v4.js"></script>
@@ -46,62 +49,47 @@
                 "event": "ready",
             };
 
-            window.webkit.messageHandlers.eventHandler.postMessage(data)
+            //window.webkit.messageHandlers.eventHandler.postMessage(data)
+            //window.appInterface.postMessage(data);
 
             player.on('playerComplete', function () {
                 console.log('playerComplete');
-                window.webkit.messageHandlers.eventHandler.postMessage()
+                Android.setLogAction("playerComplete", player.uuid, player.currentTime());
             });
 
             player.on('play', function (eventTime) {
                 console.log('play');
-                var data = {
-                    "event": "play",
-                    "playbackTime": eventTime,
-                };
-
-                window.webkit.messageHandlers.eventHandler.postMessage(data)
+                Android.setLogAction("play", player.uuid, player.currentTime());
             });
 
             player.on('pause', function () {
                 console.log('pause');
-                var data = {
-                    "event": "pause",
-                    "playbackTime": VidyardV4.api.getPlayersByUUID("<uuid>")[0].currentTime()
-                };
-
-                window.webkit.messageHandlers.eventHandler.postMessage(data)
+                Android.setLogAction("pause", player.uuid, player.currentTime());
             });
-
-
         },)
     }
 
-    function getGreetings() {
-        return 1;
-    }
-
-    function playVideo() {
+    function play() {
         var video = VidyardV4.players[0];
         video.play();
-        Android.pauseVideo(video.uuid, video.currentTime());
+        Android.play(video.uuid, video.currentTime());
     }
 
-    function pauseVideo() {
+    function pause() {
         var video = VidyardV4.players[0];
         video.pause();
-        Android.playVideo(video.uuid, video.currentTime());
+        Android.pause(video.uuid, video.currentTime());
     }
 
     function setFullscreen() {
         Android.setFullscreen();
-
         var video = VidyardV4.players[0];
         video.toggleFullscreen();
     }
-
 </script>
+</head>
 
+<body>
 <img
     style="width: 100%; margin: auto; display: block;"
     class="vidyard-player-embed"
@@ -111,11 +99,13 @@
     data-type="inline"
 />
 
+<!--
 <p>
-    <input type="button" class="button big-btn" value="play" onClick="playVideo()" />
-    <input type="button" class="button big-btn" value="pause" onClick="pauseVideo()" />
+    <input type="button" class="button big-btn" value="play" onClick="play()" />
+    <input type="button" class="button big-btn" value="pause" onClick="pause()" />
     <input type="button" class="button big-btn" value="fullscreen" onClick="setFullscreen()" />
 </p>
+-->
 
 </body>
 </html>
