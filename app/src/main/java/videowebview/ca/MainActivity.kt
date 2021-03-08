@@ -30,8 +30,8 @@ class MainActivity : AppCompatActivity() {
 
         binding.webview.webChromeClient = MyChrome(this)
 
-        //Lgmr3D3SmXAtCZPSaHiWTM
-        val uuid = "SrQzkLcJqjr1efvssLM9Rr"
+        //SrQzkLcJqjr1efvssLM9Rr  Lgmr3D3SmXAtCZPSaHiWTM
+        val uuid = "Lgmr3D3SmXAtCZPSaHiWTM"
         var fileString = Utils.readAsset(baseContext, "index.html", uuid)
         Utils.saveTextFile(fileString, applicationContext)
 
