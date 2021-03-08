@@ -8,12 +8,6 @@ import android.widget.Toast
 class WebAppInterface(private val mContext: Context, val webview: WebView) {
     var listLActionLog: MutableList<ActionLog> = mutableListOf()
 
-    init{
-        webview.evaluateJavascript("javascript: play();", null)
-        webview.evaluateJavascript("javascript: pause();", null)
-        webview.evaluateJavascript("javascript: setFullscreen();", null)
-    }
-
     @JavascriptInterface
     fun play(vidId: String, time: String) {
         addLog(vidId, "play", time)

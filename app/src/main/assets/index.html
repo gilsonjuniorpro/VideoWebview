@@ -45,13 +45,6 @@
             console.log('player ready:', player.ready());
             console.log(player.uuid);
 
-            var data = {
-                "event": "ready",
-            };
-
-            //window.webkit.messageHandlers.eventHandler.postMessage(data)
-            //window.appInterface.postMessage(data);
-
             player.on('playerComplete', function () {
                 console.log('playerComplete');
                 Android.setLogAction("playerComplete", player.uuid, player.currentTime());
