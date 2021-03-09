@@ -31,7 +31,7 @@ class WebAppInterface(private val mContext: Context, val webview: WebView) {
         Toast.makeText(mContext, "the action was: $action, at time: $time", Toast.LENGTH_SHORT).show()
     }
 
-    fun addLog(vidId: String, action: String, time: String){
+    private fun addLog(vidId: String, action: String, time: String){
         listLActionLog.add(
                 ActionLog(
                         vidId,
