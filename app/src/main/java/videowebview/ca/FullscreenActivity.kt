@@ -1,24 +1,17 @@
 package videowebview.ca
 
-import android.os.Bundle
-import android.webkit.WebSettings
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
-import videowebview.ca.databinding.ActivityMainBinding
+import android.os.Bundle
+import android.webkit.WebViewClient
+import videowebview.ca.databinding.ActivityFullscreenBinding
 
-class MainActivity : AppCompatActivity() {
+class FullscreenActivity : AppCompatActivity() {
 
-    companion object{
-        const val FLYBITS_JAVASCRIPT_INTERFACE = "Android"
-        const val FLYBITS_HTML_BASE_FILE = "index.html"
-    }
-
-    lateinit var binding: ActivityMainBinding
+    lateinit var binding: ActivityFullscreenBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityFullscreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         Utils.applySettingToWebview(binding.webview)
@@ -26,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         binding.webview.webChromeClient = MyChrome(this)
 
         val uuid = "Lgmr3D3SmXAtCZPSaHiWTM"
-        var fileString: String = Utils.readAsset(baseContext, FLYBITS_HTML_BASE_FILE, uuid)
+        var fileString: String = Utils.readAsset(baseContext, MainActivity.FLYBITS_HTML_BASE_FILE, uuid)
 
         // replacing this part with loadDataWithBaseURL so we don't need to save file again but doing this we have a
         // problem getting actions from video
@@ -34,11 +27,11 @@ class MainActivity : AppCompatActivity() {
         binding.webview.loadUrl("file:///data/user/0/videowebview.ca/files/index.html")
         //binding.webview.loadDataWithBaseURL(null, fileString , "text/html", "utf-8", null)
 
-        binding.webview.addJavascriptInterface(WebAppInterface(this), FLYBITS_JAVASCRIPT_INTERFACE)
+        binding.webview.addJavascriptInterface(WebAppInterface(this), MainActivity.FLYBITS_JAVASCRIPT_INTERFACE)
     }
 
     override fun onDestroy() {
-        binding.webview.removeJavascriptInterface(FLYBITS_JAVASCRIPT_INTERFACE)
+        binding.webview.removeJavascriptInterface(MainActivity.FLYBITS_JAVASCRIPT_INTERFACE)
         super.onDestroy()
     }
 }

@@ -1,6 +1,8 @@
 package videowebview.ca
 
 import android.content.Context
+import android.webkit.WebSettings
+import android.webkit.WebView
 import java.io.BufferedReader
 import java.io.FileOutputStream
 import java.io.OutputStreamWriter
@@ -27,6 +29,17 @@ class Utils {
                 .open(fileName)
                 .bufferedReader()
                 .use(BufferedReader::readText).replace("<uuid>", uuid)
+        }
+
+        fun applySettingToWebview(webview: WebView){
+            webview.settings.apply {
+                loadWithOverviewMode = true
+                javaScriptEnabled = true
+                cacheMode = WebSettings.LOAD_NO_CACHE
+                //when disabled the video don't plays
+                allowUniversalAccessFromFileURLs = true
+                allowFileAccess = true
+            }
         }
     }
 }
