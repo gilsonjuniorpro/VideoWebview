@@ -5,9 +5,17 @@
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
 <style>
     body {
-        background-color: #000000;
-        width: 100%;
-        text-align: center;
+        background-color: "#000000";
+        margin:0;
+        padding:0;
+        height:200vh
+    }
+    div {
+        position: absolute;
+        left: 0px;
+        right: 0px;
+        top: 0px;
+        bottom: 0px;
     }
 
     .button {
@@ -33,7 +41,7 @@
         width: 90px;
         height: 40px;
     }
-    </style>
+</style>
 
 
 <!-- The script tag should live in the head of your page if at all possible -->
@@ -83,14 +91,7 @@
 </head>
 
 <body>
-<img
-    style="width: 100%; margin: auto; display: block;"
-    class="vidyard-player-embed"
-    src="https://play.vidyard.com/<uuid>.jpg"
-    data-uuid="<uuid>"
-    data-v="4"
-    data-type="inline"
-/>
+<div class="vidyard-player-embed" data-uuid="<uuid>" data-v="4" data-type="inline"/>
 
 <!--
 <p>
