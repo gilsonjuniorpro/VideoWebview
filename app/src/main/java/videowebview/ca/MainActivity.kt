@@ -1,11 +1,10 @@
 package videowebview.ca
 
 import android.os.Bundle
-import android.webkit.*
+import android.webkit.WebSettings
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
-import androidx.webkit.WebViewAssetLoader
-import androidx.webkit.WebViewAssetLoader.AssetsPathHandler
-import androidx.webkit.WebViewAssetLoader.ResourcesPathHandler
 import videowebview.ca.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -26,7 +25,6 @@ class MainActivity : AppCompatActivity() {
         binding.webview.webViewClient = WebViewClient()
         binding.webview.webChromeClient = MyChrome(this)
 
-        //SrQzkLcJqjr1efvssLM9Rr  Lgmr3D3SmXAtCZPSaHiWTM
         val uuid = "Lgmr3D3SmXAtCZPSaHiWTM"
         var fileString: String = Utils.readAsset(baseContext, FLYBITS_HTML_BASE_FILE, uuid)
 
@@ -36,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         binding.webview.loadUrl("file:///data/user/0/videowebview.ca/files/index.html")
         //binding.webview.loadDataWithBaseURL(null, fileString , "text/html", "utf-8", null)
 
-        binding.webview.addJavascriptInterface(WebAppInterface(this, binding.webview), FLYBITS_JAVASCRIPT_INTERFACE)
+        binding.webview.addJavascriptInterface(WebAppInterface(this), FLYBITS_JAVASCRIPT_INTERFACE)
     }
 
     override fun onDestroy() {
@@ -54,5 +52,4 @@ class MainActivity : AppCompatActivity() {
             allowFileAccess = true
         }
     }
-
 }

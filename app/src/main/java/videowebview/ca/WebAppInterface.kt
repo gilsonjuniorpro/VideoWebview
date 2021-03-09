@@ -5,7 +5,7 @@ import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.widget.Toast
 
-class WebAppInterface(private val mContext: Context, val webview: WebView) {
+class WebAppInterface(private val mContext: Context) {
     var listLActionLog: MutableList<ActionLog> = mutableListOf()
 
     @JavascriptInterface
@@ -31,7 +31,7 @@ class WebAppInterface(private val mContext: Context, val webview: WebView) {
         Toast.makeText(mContext, "the action was: $action, at time: $time", Toast.LENGTH_SHORT).show()
     }
 
-    private fun addLog(vidId: String, action: String, time: String){
+    private fun addLog(vidId: String, action: String, time: String) {
         listLActionLog.add(
                 ActionLog(
                         vidId,

@@ -22,10 +22,11 @@ class Utils {
             }
         }
 
-        fun readAsset(context: Context, fileName: String, uuid: String): String =
-            context.assets
+        fun readAsset(context: Context, fileName: String, uuid: String): String {
+            return context.assets
                 .open(fileName)
                 .bufferedReader()
                 .use(BufferedReader::readText).replace("<uuid>", uuid)
+        }
     }
 }
