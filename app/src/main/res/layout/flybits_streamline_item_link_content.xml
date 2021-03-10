@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:apps="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Concierge.StreamLined.Container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/flybits_streamline_link_imgHeader"
+        android:layout_width="@dimen/flybits_streamlined_width_image"
+        android:layout_height="@dimen/flybits_streamlined_height_image"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/flybits_streamline_link_header_image_desc"
+        apps:layout_constraintDimensionRatio="H,16:9"
+        apps:layout_constraintEnd_toEndOf="parent"
+        apps:layout_constraintStart_toStartOf="parent"
+        apps:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.exoplayer2.ui.PlayerView
+        android:id="@+id/flybits_streamline_link_exoplayer"
+        android:layout_width="@dimen/flybits_streamlined_width_image"
+        android:layout_height="@dimen/flybits_streamlined_height_image"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/flybits_streamline_button_header_image_desc"
+        apps:layout_constraintDimensionRatio="H,16:9"
+        apps:layout_constraintEnd_toEndOf="parent"
+        apps:layout_constraintStart_toStartOf="parent"
+        apps:layout_constraintTop_toTopOf="parent" />
+
+    <WebView
+            android:id="@+id/flybits_streamline_link_vidyard"
+            android:layout_width="@dimen/flybits_streamlined_width_image"
+            android:layout_height="@dimen/flybits_streamlined_height_image"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/flybits_streamline_button_header_image_desc"
+            apps:layout_constraintDimensionRatio="H,16:9"
+            apps:layout_constraintEnd_toEndOf="parent"
+            apps:layout_constraintStart_toStartOf="parent"
+            apps:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/flybits_streamline_link_header"
+        style="@style/Concierge.StreamLined.Link.Header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/flybits_streamlined_margin_zero"
+        android:padding="@dimen/flybits_streamlined_padding_zero"
+        apps:layout_constraintEnd_toEndOf="parent"
+        apps:layout_constraintStart_toStartOf="parent"
+        apps:layout_constraintTop_toBottomOf="@+id/flybits_streamline_link_imgHeader"
+        tools:text="Header" />
+
+    <TextView
+        android:id="@+id/flybits_streamline_link_title"
+        style="@style/Concierge.StreamLined.Link.Title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/flybits_streamlined_margin_zero"
+        android:padding="@dimen/flybits_streamlined_padding_zero"
+        apps:layout_constraintEnd_toEndOf="parent"
+        apps:layout_constraintStart_toStartOf="parent"
+        apps:layout_constraintTop_toBottomOf="@+id/flybits_streamline_link_header"
+        tools:text="Title" />
+
+    <WebView
+        android:id="@+id/flybits_streamline_link_description"
+        style="@style/Concierge.StreamLined.Link.Description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/flybits_streamlined_margin_zero"
+        android:ellipsize="end"
+        android:maxLines="5"
+        android:padding="@dimen/flybits_streamlined_padding_zero"
+        apps:layout_constraintEnd_toEndOf="parent"
+        apps:layout_constraintStart_toStartOf="parent"
+        apps:layout_constraintTop_toBottomOf="@+id/flybits_streamline_link_title" />
+
+    <TextView
+        android:id="@+id/flybits_streamline_link_action"
+        style="@style/Concierge.StreamLined.Link.LinkAction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/flybits_streamlined_padding_zero"
+        apps:layout_constraintBottom_toBottomOf="parent"
+        apps:layout_constraintStart_toStartOf="parent"
+        apps:layout_constraintTop_toBottomOf="@+id/flybits_streamline_link_description"
+        tools:text="Link Action" />
+
+</android.support.constraint.ConstraintLayout>
