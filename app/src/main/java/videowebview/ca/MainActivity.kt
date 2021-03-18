@@ -1,13 +1,15 @@
 package videowebview.ca
 
 import android.os.Bundle
-import android.webkit.WebSettings
-import android.webkit.WebView
+import android.webkit.WebChromeClient
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.add
+import androidx.fragment.app.commit
 import videowebview.ca.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+
+class MainActivity : AppCompatActivity(){
 
     companion object{
         const val FLYBITS_JAVASCRIPT_INTERFACE = "Android"
@@ -23,7 +25,8 @@ class MainActivity : AppCompatActivity() {
 
         Utils.applySettingToWebview(binding.webview)
         binding.webview.webViewClient = WebViewClient()
-        binding.webview.webChromeClient = MyChrome(this)
+        //binding.webview.webChromeClient = MyChrome(this)
+        binding.webview.webChromeClient = WebChromeClient()
 
         val uuid = "Lgmr3D3SmXAtCZPSaHiWTM"
         var fileString: String = Utils.readAsset(baseContext, FLYBITS_HTML_BASE_FILE, uuid)
@@ -32,9 +35,23 @@ class MainActivity : AppCompatActivity() {
         // problem getting actions from video
         Utils.saveTextFile(fileString, applicationContext)
         binding.webview.loadUrl("file:///data/user/0/videowebview.ca/files/index.html")
+        binding.webview.addJavascriptInterface(WebAppInterface(this), FLYBITS_JAVASCRIPT_INTERFACE)
         //binding.webview.loadDataWithBaseURL(null, fileString , "text/html", "utf-8", null)
 
-        binding.webview.addJavascriptInterface(WebAppInterface(this), FLYBITS_JAVASCRIPT_INTERFACE)
+        binding.btFull.setOnClickListener{
+            supportFragmentManager.commit {
+                setReorderingAllowed(true)
+                add<ExampleFragment>(R.id.fragment_container_view)
+            }
+        }
+    }
+
+    fun close() {
+        supportFragmentManager.commit {
+            setReorderingAllowed(true)
+                //add<ExampleFragment>(R.id.fragment_container_view)
+                .remove(ExampleFragment(""))
+        }
     }
 
     override fun onDestroy() {

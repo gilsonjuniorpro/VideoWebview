@@ -67,6 +67,11 @@
                 console.log('pause');
                 Android.setLogAction("pause", player.uuid, player.currentTime());
             });
+
+            player.on('toggleFullscreen', function () {
+                console.log('toggleFullscreen');
+                Android.setLogAction("fullscreen", player.uuid, player.currentTime());
+            });
         },)
     }
 

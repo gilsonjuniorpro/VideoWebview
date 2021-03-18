@@ -21,12 +21,18 @@ class WebAppInterface(private val mContext: Context) {
     }
 
     @JavascriptInterface
-    fun setFullscreen() {
+    fun toggleFullscreen() {
         Toast.makeText(mContext, "fullscreen mode", Toast.LENGTH_SHORT).show()
     }
 
     @JavascriptInterface
     fun setLogAction(action: String, vidId: String, time: String) {
+        addLog(vidId, action, time)
+        Toast.makeText(mContext, "the action was: $action, at time: $time", Toast.LENGTH_SHORT).show()
+    }
+
+    @JavascriptInterface
+    fun playerComplete(action: String, vidId: String, time: String) {
         addLog(vidId, action, time)
         Toast.makeText(mContext, "the action was: $action, at time: $time", Toast.LENGTH_SHORT).show()
     }
