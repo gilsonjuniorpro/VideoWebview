@@ -35,6 +35,15 @@ class MainActivity : AppCompatActivity() {
         //binding.webview.loadDataWithBaseURL(null, fileString , "text/html", "utf-8", null)
 
         binding.webview.addJavascriptInterface(WebAppInterface(this), FLYBITS_JAVASCRIPT_INTERFACE)
+
+        binding.button.setOnClickListener{
+            closeShareButton()
+        }
+
+    }
+
+    private fun closeShareButton(){
+        binding.motionLayout.transitionToStart()
     }
 
     override fun onDestroy() {

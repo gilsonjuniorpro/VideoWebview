@@ -49,5 +49,7 @@ class MyChrome internal constructor(private val activity: Activity) :
             FrameLayout.LayoutParams(-1, -1)
         )
         activity.window.decorView.systemUiVisibility = 3846
+
+        //motionLayout.transitionToStart()
     }
 }
